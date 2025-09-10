@@ -1,3 +1,7 @@
+## Name: Sourabh Kumar Dubey
+## id: 801429834
+
+
 # Assignment #1 – Docker Containers
 
 This project demonstrates a **two-container stack** using Docker and Docker Compose.  
