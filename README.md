@@ -24,4 +24,4 @@ Verify that:
 
 ### One-command run (recommended)
 ```bash
-make
+docker compose up
