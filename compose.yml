@@ -1,0 +1,39 @@
+services:
+  # The PostgreSQL database service [cite: 17]
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    # Environment variables to configure the Postgres database [cite: 183-186]
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: secretpw
+      POSTGRES_DB: appdb
+    # The healthcheck ensures the app waits until the database is ready to accept connections [cite: 187]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  # The Python application service [cite: 20]
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    # The 'depends_on' condition ensures the app service starts only after the db service is healthy [cite: 195-197]
+    depends_on:
+      db:
+        condition: service_healthy
+    # Environment variables passed to the Python script [cite: 21, 198]
+    environment:
+      DB_HOST: db # The service name 'db' is used as the hostname
+      DB_PORT: 5432
+      DB_USER: appuser
+      DB_PASS: secretpw
+      DB_NAME: appdb
+      APP_TOP_N: "5"
+    # Mounts the local './out' directory into the container's '/out' directory [cite: 200, 201]
+    # This makes the output summary.json file appear on your host machine.
+    volumes:
+      - ./out:/out
