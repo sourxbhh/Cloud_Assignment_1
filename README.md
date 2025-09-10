@@ -25,3 +25,4 @@ Verify that:
 ### One-command run (recommended)
 ```bash
 docker compose up
+## Obtained output:
